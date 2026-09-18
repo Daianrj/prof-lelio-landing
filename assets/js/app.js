@@ -17,32 +17,36 @@ const FACEBOOK_URL="https://www.facebook.com/leliolima.ictuspos/";
 const PILLAR_MODAL_CONTENT={
   "Especialização multidisciplinar":{
     kicker:"Especialização multidisciplinar",
-    title:"Formação para avançar com mais segurança técnica.",
-    html:"<p>Formação para profissionais e estudantes da saúde em busca de evolução técnica e profissional.</p>"
-  },
-  "Prática em saúde":{
-    kicker:"Método prático",
-    title:"Protocolo M.O.V.E.R.",
+    title:"Especializações de Elite",
     html:[
-      '<p class="modal-lead">Curso M.O.V.E.R. - Abordagens ao Paciente com Dor Torácica: IAM. Criado pelo Prof. Lélio Lima (Intensivista, Cardiologista e graduado pela UERJ) para te dar a segurança e a qualidade que você precisa para NUNCA MAIS ter aquele frio na barra ao atender um paciente com infarto.</p>',
-      '<div class="modal-highlight"><strong>Oferta para novos alunos</strong><span>Inscreva-se com o Cupom: <b>MOVER20</b> e garanta 20% de desconto especial para novos alunos.</span></div>'
+      '<p class="modal-lead">Formação voltada para profissionais da saúde que buscam aprofundamento técnico, atualização científica e conexão com uma comunidade acadêmica ativa.</p>',
+      '<div class="modal-proof"><strong>+5.300</strong><span>profissionais de saúde ativos compartilhando experiências científicas e casos reais.</span></div>',
+      '<div class="modal-highlight"><strong>Coordenação acadêmica</strong><span>Formação com referência institucional UniRedentor / Ictus Pos.</span></div>'
     ].join("")
   },
   "Ictus Cordis":{
-    kicker:"Infraestrutura e equipamentos",
-    title:"Centro de Simulação Realística da Ictus Cordis",
+    kicker:"Ictus Cordis",
+    title:"Infraestrutura e Alta Performance",
     html:[
-      "<p>O Centro de Simulação Realística da Ictus Cordis é apresentado como um diferencial de formação prática, com foco em alta performance clínica e uso de equipamentos de ponta, incluindo Estetoscópios Riester.</p>",
-      '<ul class="modal-rich-list"><li>Monitor Multimodal de arritmias em tempo real</li><li>Manequins avançados de CTI acoplados a ventilador mecânico</li><li>Mesas de acesso venoso guiado por ultrassom</li></ul>',
+      '<p class="modal-lead">O Centro de Simulação Realística da Ictus Cordis amplia a experiência prática com recursos voltados à alta performance clínica.</p>',
+      '<ul class="modal-rich-list"><li>Estetoscópios Riester</li><li>Monitores multimodais de arritmias em tempo real</li><li>Manequins avançados de CTI</li><li>Ventiladores mecânicos</li></ul>',
       '<p class="modal-closing">É aqui que você aprende na prática de verdade.</p>'
     ].join("")
   },
-  "Formação continuada":{
-    kicker:"Certificação e comunidade",
-    title:"UniRedentor / Ictus Pos",
+  "Prática em saúde":{
+    kicker:"Prática em saúde",
+    title:"Método Prático Sem Neura",
     html:[
-      "<p>Certificação e peso institucional com referência à UniRedentor / Ictus Pos sob a coordenação acadêmica do professor.</p>",
-      '<div class="modal-proof"><strong>+5.300</strong><span>profissionais de saúde ativos na comunidade acadêmica, trocando experiências científicas e casos reais diretamente em redes e fóruns.</span></div>'
+      '<p class="modal-lead">Curso M.O.V.E.R. — Abordagens ao Paciente com Dor Torácica: IAM — criado pelo Prof. Lélio Lima, Enfermeiro UERJ e Oficial do GSE-CBMERJ, com foco em desenvolver segurança no atendimento crítico e reduzir o “frio na barriga” diante de situações de alta complexidade.</p>',
+      '<div class="modal-highlight"><strong>Cupom especial</strong><span>Use <b>MOVER20</b> para garantir 20% de desconto.</span></div>'
+    ].join("")
+  },
+  "Formação continuada":{
+    kicker:"Formação continuada",
+    title:"Jornada de Aprendizado Contínuo",
+    html:[
+      '<p class="modal-lead">Uma jornada estruturada de atualização científica contínua, prática aplicada e conexão com o mercado de trabalho na área da saúde.</p>',
+      '<ul class="modal-rich-list"><li>Atualização científica frequente</li><li>Aplicação prática em terapia intensiva</li><li>Conteúdos ligados à emergência</li><li>Conexão com demandas reais do mercado de trabalho</li></ul>'
     ].join("")
   }
 };
@@ -155,7 +159,7 @@ function injectFacebookLinks(){
     facebook.target="_blank";
     facebook.rel="noopener";
     facebook.dataset.facebookLink="true";
-    facebook.textContent="Facebook";
+    facebook.textContent="Facebook";\n    facebook.classList.add("social-footer-link");
 
     const instagram=[...footerNav.querySelectorAll("a")].find(a=>a.textContent.trim()==="Instagram");
     if(instagram) instagram.insertAdjacentElement("afterend",facebook);
@@ -231,7 +235,7 @@ function openInfoModal(config,trigger){
 
   m.layer.classList.add("is-open");
   m.layer.setAttribute("aria-hidden","false");
-  document.body.classList.add("modal-open");
+  document.body.classList.add("modal-open");\n  document.documentElement.classList.add("modal-open-root");
 
   requestAnimationFrame(()=>m.dialog.focus());
 }
@@ -242,7 +246,7 @@ function closeInfoModal(){
 
   m.layer.classList.remove("is-open");
   m.layer.setAttribute("aria-hidden","true");
-  document.body.classList.remove("modal-open");
+  document.body.classList.remove("modal-open");\n  document.documentElement.classList.remove("modal-open-root");
 
   if(lastModalTrigger&&typeof lastModalTrigger.focus==="function"){
     lastModalTrigger.focus();

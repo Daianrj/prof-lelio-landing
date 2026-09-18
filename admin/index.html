@@ -1,8 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive">
-  <title>Acesso restrito | Prof. Lélio Lima</title>
-  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0e2233;color:#fff;font-family:Inter,system-ui,sans-serif}.box{width:min(620px,90%);box-sizing:border-box;padding:40px;border:1px solid rgba(255,255,255,.14);background:#142d40}span{font-size:.76rem;letter-spacing:1.4px;font-weight:800;color:#f0a28f}h1{font-family:Georgia,serif;font-size:clamp(2.1rem,7vw,3.6rem);line-height:1;margin:14px 0 20px}p{color:#c3ced5;line-height:1.7}a{display:inline-flex;margin-top:14px;padding:13px 18px;background:#c8492e;color:#fff;text-decoration:none;font-weight:700}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>ADM | Prof. Lélio Lima</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="../assets/js/config.js" defer></script>
+  <script src="admin.js" defer></script>
 </head>
-<body><main class="box"><span>ACESSO RESTRITO</span><h1>Área administrativa desativada.</h1><p>O painel local de demonstração foi removido da versão pública. Uma nova administração somente será disponibilizada com autenticação, controle de acesso e armazenamento protegido.</p><a href="../index.html">Voltar ao site</a></main></body></html>
+<body>
+<header>
+  <div><b>Central ADM</b><span>Prof. Lélio Lima • Gestão de conteúdo</span></div>
+  <a href="../index.html">Ver site ↗</a>
+</header>
+
+<main>
+  <section class="intro">
+    <span>ADMINISTRAÇÃO</span>
+    <h1>Conteúdo, turmas e mídias em um só lugar.</h1>
+    <p>Edite as formações, dúvidas frequentes e faça upload de imagens e vídeo. Nesta etapa os uploads ficam salvos neste navegador para validação. A publicação global exigirá conexão com armazenamento em nuvem.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><h2>Mídias do site</h2><p>Faça upload e visualize antes de usar no site.</p></div>
+    </div>
+
+    <div class="media-admin-grid">
+      <article class="media-admin-card">
+        <h3>Foto principal</h3>
+        <p>Usada no hero do site.</p>
+        <input id="profileUpload" type="file" accept="image/*">
+        <div class="preview-box"><img id="profilePreview" alt="Prévia da foto principal"></div>
+        <button type="button" data-clear-media="profile">Remover foto local</button>
+      </article>
+
+      <article class="media-admin-card">
+        <h3>Imagem científica / congresso</h3>
+        <p>Reservada para conteúdo científico.</p>
+        <input id="scienceUpload" type="file" accept="image/*">
+        <div class="preview-box"><img id="sciencePreview" alt="Prévia da imagem científica"></div>
+        <button type="button" data-clear-media="science">Remover imagem local</button>
+      </article>
+
+      <article class="media-admin-card">
+        <h3>Vídeo local de destaque</h3>
+        <p>MP4/WebM curto. O YouTube continua sendo a opção principal para vídeos públicos.</p>
+        <input id="videoUpload" type="file" accept="video/mp4,video/webm,video/ogg">
+        <div class="preview-box video-preview"><video id="videoPreview" controls playsinline></video></div>
+        <button type="button" data-clear-media="video">Remover vídeo local</button>
+      </article>
+    </div>
+    <p class="notice"><strong>Importante:</strong> estes uploads são persistidos apenas neste navegador/dispositivo. Para a ADM publicar arquivos para todos os visitantes, vamos conectar storage/backend seguro.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><h2>Formações e turmas</h2><p>Cadastre cursos e altere dias, horários, vagas, modalidade e status.</p></div>
+      <button id="addCourse">+ Nova formação</button>
+    </div>
+    <div id="courseEditor"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><h2>Perguntas frequentes</h2><p>Edite as respostas exibidas na landing page.</p></div>
+      <button id="addFaq">+ Nova pergunta</button>
+    </div>
+    <div id="faqEditor"></div>
+  </section>
+
+  <div class="savebar">
+    <button id="resetBtn" class="secondary">Restaurar padrão</button>
+    <button id="exportBtn" class="secondary">Exportar JSON</button>
+    <button id="saveBtn">Salvar alterações</button>
+  </div>
+  <div id="toast" role="status"></div>
+</main>
+</body>
+</html>

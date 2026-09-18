@@ -39,7 +39,7 @@ function renderCourses(data){
   grid.innerHTML="";
   select.innerHTML='<option value="">Selecione</option>';
 
-  (data.courses||[]).filter(c=>c.active!==false).forEach(c=>{
+  window.__LELIO_COURSES__=(data.courses||[]).filter(c=>c.active!==false);\n  window.__LELIO_COURSES__.forEach(c=>{
     const row=document.createElement("article");
     row.className="formation-row";
     row.innerHTML=`
@@ -52,7 +52,7 @@ function renderCourses(data){
       <div class="formation-cell"><b>Dias / horários</b><span>${esc(c.schedule)}</span></div>
       <div class="formation-cell"><b>Local</b><span>${esc(c.city)}</span></div>
       <div class="formation-cell"><b>Vagas</b><span>${esc(c.seats)}</span></div>
-      <a class="btn btn-primary" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}" target="_blank" rel="noopener">Quero informações</a>`;
+      <div class="formation-row-actions"><button class="formation-detail-btn" type="button" data-course-modal data-course-id="${esc(c.id)}">Ver detalhes</button><a class="btn btn-primary" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}" target="_blank" rel="noopener">Quero informações</a></div>`;
     grid.appendChild(row);
 
     const opt=document.createElement("option");
@@ -93,6 +93,69 @@ function initLeadForm(){
     const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.\n\nNome: ${nome}\nWhatsApp: ${whats}\nE-mail: ${email||"não informado"}\nProfissão / formação: ${profissao||"não informado"}\nFormação de interesse: ${curso}`;
     const opened=window.open(waUrl(msg),"_blank","noopener");
     if(opened) form.reset();
+  });
+}
+
+let lastModalTrigger=null;
+function modalElements(){return {layer:document.getElementById("infoModal"),dialog:document.querySelector("#infoModal .info-modal"),kicker:document.getElementById("modalKicker"),title:document.getElementById("modalTitle"),body:document.getElementById("modalBody"),actions:document.getElementById("modalActions")};}
+function openInfoModal(config,trigger){
+  const m=modalElements(); if(!m.layer||!m.dialog)return;
+  lastModalTrigger=trigger||document.activeElement;
+  m.kicker.textContent=config.kicker||"Informações";
+  m.title.textContent=config.title||"Detalhes";
+  let bodyHtml="";
+  if(config.text) bodyHtml+="<p>"+esc(config.text)+"</p>";
+  if(config.details&&config.details.length){
+    bodyHtml+='<div class="modal-detail-list">';
+    config.details.forEach(function(d){bodyHtml+="<div><strong>"+esc(d.label)+"</strong><span>"+esc(d.value)+"</span></div>";});
+    bodyHtml+="</div>";
+  }
+  m.body.innerHTML=bodyHtml;
+  m.actions.innerHTML="";
+  (config.actions||[]).forEach(function(a){
+    const link=document.createElement("a");
+    link.className="btn "+(a.className||"btn-primary");
+    link.href=a.href; link.textContent=a.label;
+    if(a.target){link.target=a.target;link.rel="noopener";}
+    m.actions.appendChild(link);
+  });
+  m.layer.classList.add("is-open"); m.layer.setAttribute("aria-hidden","false"); document.body.classList.add("modal-open");
+  requestAnimationFrame(function(){m.dialog.focus();});
+}
+function closeInfoModal(){
+  const m=modalElements(); if(!m.layer||!m.layer.classList.contains("is-open"))return;
+  m.layer.classList.remove("is-open"); m.layer.setAttribute("aria-hidden","true"); document.body.classList.remove("modal-open");
+  if(lastModalTrigger&&typeof lastModalTrigger.focus==="function") lastModalTrigger.focus();
+}
+function initInfoModals(){
+  document.addEventListener("click",function(e){
+    if(e.target.closest("[data-modal-close]")){closeInfoModal();return;}
+    const simple=e.target.closest(".info-trigger");
+    if(simple){openInfoModal({kicker:"Sobre a atuação",title:simple.dataset.modalTitle||"Informações",text:simple.dataset.modalText||""},simple);return;}
+    const courseBtn=e.target.closest("[data-course-modal]");
+    if(courseBtn){
+      const courses=window.__LELIO_COURSES__||[];
+      const course=courses.find(function(c){return String(c.id)===String(courseBtn.dataset.courseId);});
+      if(!course)return;
+      openInfoModal({kicker:course.status||"Formação",title:course.title,text:course.description,details:[
+        {label:"Modalidade",value:course.mode||"Consulte a equipe"},
+        {label:"Dias / horários",value:course.schedule||"Próxima turma sob consulta"},
+        {label:"Local",value:course.city||"Consulte a equipe"},
+        {label:"Vagas",value:course.seats||"Vagas sob consulta"}
+      ],actions:[
+        {label:"Quero informações",className:"btn-primary",href:waUrl("Olá Professor Lélio, gostaria de informações sobre "+course.title+"."),target:"_blank"},
+        {label:"Entrar na lista",className:"btn-secondary",href:"#alunos"}
+      ]},courseBtn);
+    }
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape")closeInfoModal();
+    if(e.key!=="Tab")return;
+    const m=modalElements(); if(!m.layer||!m.layer.classList.contains("is-open"))return;
+    const focusables=Array.from(m.dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'));
+    if(!focusables.length)return; const first=focusables[0],last=focusables[focusables.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   });
 }
 

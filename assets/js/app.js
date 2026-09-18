@@ -516,6 +516,85 @@ function initThematicAnimations(){
 }
 
 
+
+
+function openAdminMediaDb(){
+  return new Promise((resolve,reject)=>{
+    if(!("indexedDB" in window)){reject(new Error("IndexedDB indisponível"));return;}
+    const req=indexedDB.open("lelio_admin_media",1);
+    req.onupgradeneeded=()=>{
+      const db=req.result;
+      if(!db.objectStoreNames.contains("media")) db.createObjectStore("media");
+    };
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+
+async function readAdminMedia(key){
+  try{
+    const db=await openAdminMediaDb();
+    const value=await new Promise((resolve,reject)=>{
+      const tx=db.transaction("media","readonly");
+      const req=tx.objectStore("media").get(key);
+      req.onsuccess=()=>resolve(req.result||null);
+      req.onerror=()=>reject(req.error);
+    });
+    db.close();
+    return value;
+  }catch(e){
+    return null;
+  }
+}
+
+async function initAdminMediaOverrides(){
+  const [profile,science,video]=await Promise.all([
+    readAdminMedia("profile"),
+    readAdminMedia("science"),
+    readAdminMedia("video")
+  ]);
+
+  if(profile){
+    const heroImg=document.querySelector(".hero-figure img");
+    if(heroImg){
+      if(heroImg.dataset.localObjectUrl) URL.revokeObjectURL(heroImg.dataset.localObjectUrl);
+      const url=URL.createObjectURL(profile);
+      heroImg.dataset.localObjectUrl=url;
+      heroImg.src=url;
+      heroImg.removeAttribute("srcset");
+    }
+  }
+
+  if(science){
+    const scienceImg=document.querySelector(".portrait-feature img, .photo-feature img");
+    if(scienceImg){
+      if(scienceImg.dataset.localObjectUrl) URL.revokeObjectURL(scienceImg.dataset.localObjectUrl);
+      const url=URL.createObjectURL(science);
+      scienceImg.dataset.localObjectUrl=url;
+      scienceImg.src=url;
+      scienceImg.removeAttribute("srcset");
+    }
+  }
+
+  if(video){
+    const firstVideo=document.querySelector(".video-gallery video");
+    if(firstVideo){
+      if(firstVideo.dataset.localObjectUrl) URL.revokeObjectURL(firstVideo.dataset.localObjectUrl);
+      const url=URL.createObjectURL(video);
+      firstVideo.dataset.localObjectUrl=url;
+      const source=firstVideo.querySelector("source");
+      if(source){
+        source.src=url;
+        source.type=video.type||"video/mp4";
+        firstVideo.load();
+      }else{
+        firstVideo.src=url;
+      }
+    }
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded",async()=>{
   const data=await getData();
 
@@ -528,4 +607,5 @@ document.addEventListener("DOMContentLoaded",async()=>{
   initInfoModals();
   bindDirectModalTriggers();
   initThematicAnimations();
+  await initAdminMediaOverrides();
 });

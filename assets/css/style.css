@@ -827,3 +827,49 @@ html.modal-open-root{
     transition:none!important;
   }
 }
+
+
+/* FIX MÍDIA REAL — fotos verticais sem corte e sem bloco vazio */
+.media-section .media-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:start;
+  gap:32px;
+}
+
+.media-section .photo-feature{
+  display:block;
+  margin:0;
+  background:transparent;
+  overflow:visible;
+}
+
+.media-section .photo-feature img,
+.media-section .photo-feature.portrait-feature img{
+  display:block;
+  width:100%;
+  height:auto !important;
+  max-height:none !important;
+  aspect-ratio:9 / 16 !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  background:#0E2233;
+}
+
+.media-section .photo-feature figcaption,
+.media-section .photo-feature.portrait-feature figcaption{
+  width:100%;
+  padding:16px 0 0;
+  background:transparent;
+}
+
+@media(max-width:760px){
+  .media-section .media-grid{
+    grid-template-columns:1fr;
+    gap:42px;
+  }
+
+  .media-section .photo-feature img,
+  .media-section .photo-feature.portrait-feature img{
+    aspect-ratio:9 / 16 !important;
+  }
+}

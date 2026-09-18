@@ -1,0 +1,61 @@
+{
+  "courses": [
+    {
+      "id": "uti-adulto",
+      "title": "Terapia Intensiva Adulto",
+      "type": "Especialização",
+      "featured": true,
+      "active": true,
+      "status": "Lista de interesse",
+      "city": "Méier - RJ",
+      "mode": "A definir pela ADM",
+      "schedule": "A definir pela ADM",
+      "seats": "A definir pela ADM",
+      "description": "Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."
+    },
+    {
+      "id": "cardiologia",
+      "title": "Enfermagem em Cardiologia",
+      "type": "Especialização",
+      "featured": false,
+      "active": true,
+      "status": "Lista de interesse",
+      "city": "Rio de Janeiro",
+      "mode": "A definir pela ADM",
+      "schedule": "A definir pela ADM",
+      "seats": "A definir pela ADM",
+      "description": "Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."
+    },
+    {
+      "id": "pocus",
+      "title": "Ultrassonografia Point of Care",
+      "type": "Curso prático",
+      "featured": false,
+      "active": true,
+      "status": "Novas turmas sob consulta",
+      "city": "A definir",
+      "mode": "A definir pela ADM",
+      "schedule": "A definir pela ADM",
+      "seats": "A definir pela ADM",
+      "description": "Capacitação prática em ultrassonografia à beira do leito."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quando serão as próximas turmas?",
+      "a": "Datas, dias e horários são definidos pela administração e serão divulgados conforme a abertura de cada turma."
+    },
+    {
+      "q": "Os cursos são presenciais ou online?",
+      "a": "A modalidade é informada individualmente em cada turma e pode variar conforme a formação."
+    },
+    {
+      "q": "Como recebo valores e condições de pagamento?",
+      "a": "Preencha o formulário ou fale pelo WhatsApp para receber as condições atualizadas."
+    },
+    {
+      "q": "Há certificado?",
+      "a": "A certificação e demais regras acadêmicas devem ser confirmadas na apresentação oficial de cada curso."
+    }
+  ]
+}

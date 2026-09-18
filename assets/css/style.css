@@ -713,3 +713,35 @@ html.modal-open-root{
   [data-career-reveal]{opacity:1!important;transform:none!important;transition:none!important}
   .career-timeline-marker,.career-timeline-content{transition:none!important}
 }
+
+
+/* FIX DEFINITIVO — imagem científica inteira, sem corte */
+.photo-feature.portrait-feature{
+  justify-content:flex-start;
+  background:#0E2233;
+  overflow:hidden;
+}
+
+.photo-feature.portrait-feature img{
+  width:100%;
+  height:auto !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+  background:#0E2233;
+}
+
+.photo-feature.portrait-feature figcaption{
+  background:var(--paper);
+  width:100%;
+}
+
+@media(max-width:980px){
+  .photo-feature.portrait-feature img{
+    width:100%;
+    height:auto !important;
+    max-height:none !important;
+    object-fit:contain !important;
+  }
+}

@@ -397,3 +397,135 @@ body.modal-open{
   fill:currentColor;
   display:block;
 }
+
+
+/* Modal premium refinement v2 */
+.modal-backdrop{
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  background-color:rgba(0,0,0,.5);
+  opacity:0;
+  transition:opacity .3s ease-out;
+}
+
+.modal-layer.is-open .modal-backdrop{
+  opacity:1;
+}
+
+.info-modal{
+  opacity:0;
+  transform:scale(.95);
+  transition:opacity .3s ease-out,transform .3s ease-out;
+  will-change:opacity,transform;
+}
+
+.modal-layer.is-open .info-modal{
+  opacity:1;
+  transform:scale(1);
+}
+
+body.modal-open,
+html.modal-open-root{
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+
+.modal-highlight{
+  margin-top:22px;
+  padding:18px 20px;
+  border-left:4px solid var(--coral);
+  background:rgba(200,73,46,.08);
+}
+
+.modal-proof{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:18px;
+  align-items:center;
+  margin-top:22px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+}
+
+.modal-proof strong{
+  font-family:var(--serif);
+  font-size:2.45rem;
+  line-height:1;
+  color:var(--coral);
+}
+
+.modal-rich-list{
+  list-style:none;
+  padding:0;
+  margin:22px 0;
+  border-top:1px solid var(--line);
+}
+
+.modal-rich-list li{
+  position:relative;
+  padding:13px 0 13px 24px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-rich-list li::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:22px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--coral);
+}
+
+.modal-closing{
+  margin-top:22px!important;
+  font-family:var(--serif);
+  font-size:1.35rem;
+  color:var(--ink);
+}
+
+.social-footer-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.social-footer-link::before{
+  content:"f";
+  display:grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border:1px solid currentColor;
+  border-radius:50%;
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.btn,
+.formation-detail-btn,
+.info-trigger{
+  transition:transform .3s ease-out,background-color .3s ease-out,color .3s ease-out,border-color .3s ease-out;
+}
+
+.btn:hover,
+.formation-detail-btn:hover,
+.info-trigger:hover{
+  transform:scale(1.03);
+}
+
+@media(max-width:620px){
+  .modal-proof{grid-template-columns:1fr;gap:8px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .modal-backdrop,
+  .info-modal,
+  .btn,
+  .formation-detail-btn,
+  .info-trigger{
+    transition:none!important;
+    transform:none!important;
+  }
+}

@@ -1,8 +1,8 @@
 const FALLBACK_DATA={
   courses:[
-    {id:"uti-adulto",title:"Terapia Intensiva Adulto",type:"Especialização",featured:true,active:true,status:"Lista de interesse",city:"Méier - RJ",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
-    {id:"cardiologia",title:"Enfermagem em Cardiologia",type:"Especialização",featured:false,active:true,status:"Lista de interesse",city:"Rio de Janeiro",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
-    {id:"pocus",title:"Ultrassonografia Point of Care",type:"Curso prático",featured:false,active:true,status:"Novas turmas sob consulta",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Capacitação prática em ultrassonografia à beira do leito."}
+    {id:"uti-adulto",title:"Terapia Intensiva Adulto",featured:true,active:true,status:"Lista de interesse",city:"Méier - RJ",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
+    {id:"cardiologia",title:"Enfermagem em Cardiologia",featured:false,active:true,status:"Lista de interesse",city:"Rio de Janeiro",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
+    {id:"pocus",title:"Ultrassonografia Point of Care",featured:false,active:true,status:"Novas turmas sob consulta",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Capacitação prática em ultrassonografia à beira do leito."}
   ],
   faqs:[
     {q:"Quando serão as próximas turmas?",a:"Datas, dias e horários são definidos pela administração e serão divulgados conforme a abertura de cada turma."},
@@ -24,6 +24,9 @@ async function getData(){
   return FALLBACK_DATA;
 }
 
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
 function waUrl(message){
   const number=(window.SITE_CONFIG?.whatsapp||"5521964896857").replace(/\D/g,"");
   return "https://wa.me/"+number+"?text="+encodeURIComponent(message);
@@ -35,26 +38,28 @@ function renderCourses(data){
   if(!grid||!select)return;
   grid.innerHTML="";
   select.innerHTML='<option value="">Selecione</option>';
+
   (data.courses||[]).filter(c=>c.active!==false).forEach(c=>{
-    const card=document.createElement("article");
-    card.className="course-card"+(c.featured?" featured":"");
-    card.innerHTML=`<span class="status">${esc(c.status||c.type||"Formação")}</span>
-      <h3>${esc(c.title)}</h3><p>${esc(c.description||"")}</p>
-      <div class="course-meta">
-        <span><b>Modalidade</b><br>${esc(c.mode||"A definir")}</span>
-        <span><b>Dias/horários</b><br>${esc(c.schedule||"A definir")}</span>
-        <span><b>Local</b><br>${esc(c.city||"A definir")}</span>
-        <span><b>Vagas</b><br>${esc(c.seats||"A definir")}</span>
+    const row=document.createElement("article");
+    row.className="formation-row";
+    row.innerHTML=`
+      <div class="formation-main">
+        <span class="status">${esc(c.status)}</span>
+        <h3>${esc(c.title)}</h3>
+        <p>${esc(c.description)}</p>
       </div>
-      <a class="btn ${c.featured?"btn-primary":"btn-ghost"}" target="_blank" rel="noopener" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}">Quero informações</a>`;
-    grid.appendChild(card);
+      <div class="formation-cell"><b>Modalidade</b><span>${esc(c.mode)}</span></div>
+      <div class="formation-cell"><b>Dias / horários</b><span>${esc(c.schedule)}</span></div>
+      <div class="formation-cell"><b>Local</b><span>${esc(c.city)}</span></div>
+      <div class="formation-cell"><b>Vagas</b><span>${esc(c.seats)}</span></div>
+      <a class="btn btn-primary" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}" target="_blank" rel="noopener">Quero informações</a>`;
+    grid.appendChild(row);
+
     const opt=document.createElement("option");
-    opt.value=c.title;opt.textContent=c.title;select.appendChild(opt);
+    opt.value=c.title;
+    opt.textContent=c.title;
+    select.appendChild(opt);
   });
-  const all=document.createElement("option");
-  all.value="Quero conhecer todas as opções";
-  all.textContent="Quero conhecer todas as opções";
-  select.appendChild(all);
 }
 
 function renderFaqs(data){
@@ -62,14 +67,10 @@ function renderFaqs(data){
   if(!wrap)return;
   wrap.innerHTML="";
   (data.faqs||[]).forEach(item=>{
-    const d=document.createElement("details");
-    d.innerHTML=`<summary>${esc(item.q)}</summary><p>${esc(item.a)}</p>`;
-    wrap.appendChild(d);
+    const details=document.createElement("details");
+    details.innerHTML=`<summary>${esc(item.q)}</summary><p>${esc(item.a)}</p>`;
+    wrap.appendChild(details);
   });
-}
-
-function esc(v){
-  return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
 
 function initWhatsApp(){
@@ -89,7 +90,7 @@ function initLeadForm(){
     const email=String(fd.get("email")||"").trim();
     const profissao=String(fd.get("profissao")||"").trim();
     const curso=String(fd.get("curso")||"").trim();
-    const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.\n\nNome: ${nome}\nMeu WhatsApp: ${whats}\nE-mail: ${email||"não informado"}\nProfissão/formação: ${profissao||"não informado"}\nInteresse: ${curso}`;
+    const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.\n\nNome: ${nome}\nWhatsApp: ${whats}\nE-mail: ${email||"não informado"}\nProfissão / formação: ${profissao||"não informado"}\nFormação de interesse: ${curso}`;
     window.open(waUrl(msg),"_blank","noopener");
   });
 }

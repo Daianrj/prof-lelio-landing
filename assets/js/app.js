@@ -159,7 +159,8 @@ function injectFacebookLinks(){
     facebook.target="_blank";
     facebook.rel="noopener";
     facebook.dataset.facebookLink="true";
-    facebook.textContent="Facebook";\n    facebook.classList.add("social-footer-link");
+    facebook.textContent="Facebook";
+    facebook.classList.add("social-footer-link");
 
     const instagram=[...footerNav.querySelectorAll("a")].find(a=>a.textContent.trim()==="Instagram");
     if(instagram) instagram.insertAdjacentElement("afterend",facebook);
@@ -235,7 +236,8 @@ function openInfoModal(config,trigger){
 
   m.layer.classList.add("is-open");
   m.layer.setAttribute("aria-hidden","false");
-  document.body.classList.add("modal-open");\n  document.documentElement.classList.add("modal-open-root");
+  document.body.classList.add("modal-open");
+  document.documentElement.classList.add("modal-open-root");
 
   requestAnimationFrame(()=>m.dialog.focus());
 }
@@ -246,7 +248,8 @@ function closeInfoModal(){
 
   m.layer.classList.remove("is-open");
   m.layer.setAttribute("aria-hidden","true");
-  document.body.classList.remove("modal-open");\n  document.documentElement.classList.remove("modal-open-root");
+  document.body.classList.remove("modal-open");
+  document.documentElement.classList.remove("modal-open-root");
 
   if(lastModalTrigger&&typeof lastModalTrigger.focus==="function"){
     lastModalTrigger.focus();

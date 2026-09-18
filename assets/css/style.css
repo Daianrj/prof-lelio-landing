@@ -126,7 +126,7 @@ button,input,select{font:inherit}
 .lead-form input::placeholder{color:#97A6AF}
 .lead-form .consent{display:flex;gap:10px;align-items:flex-start}
 .lead-form .consent input{width:auto;margin-top:5px}
-.lead-form small{display:block;color:#AEBBC3;margin-top:10px}
+.lead-form small{display:block;color:#AEBBC3;margin-top:10px}.lead-form small a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 
 .faq-list details{border-top:1px solid var(--line);padding:16px 0}
 .faq-list details:last-child{border-bottom:1px solid var(--line)}

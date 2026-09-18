@@ -233,3 +233,160 @@ button,input,select{font:inherit}
 body.modal-open{overflow:hidden}
 @media(max-width:620px){.info-modal{padding:28px 20px 22px}.modal-detail-list{grid-template-columns:1fr}.modal-actions{display:grid}.modal-actions .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){.modal-backdrop,.info-modal,.info-trigger,.formation-detail-btn,.formation-row,.modal-close{transition:none!important}}
+
+
+/* Refinamento cirúrgico Facebook + modais premium */
+.btn,
+.formation-detail-btn,
+.info-trigger,
+.footer a,
+.social-actions a{
+  transition:transform .3s ease-out,background-color .3s ease-out,color .3s ease-out,border-color .3s ease-out,opacity .3s ease-out;
+}
+
+.btn:hover,
+.formation-detail-btn:hover,
+.social-actions a:hover{
+  transform:scale(1.03);
+}
+
+.pillar-clickable{
+  cursor:pointer;
+  transition:background-color .3s ease-out,transform .3s ease-out,border-color .3s ease-out;
+}
+
+.pillar-clickable:hover{
+  background:rgba(200,73,46,.035);
+  transform:translateX(4px);
+}
+
+.pillar-clickable:focus-visible{
+  outline:3px solid var(--focus);
+  outline-offset:4px;
+}
+
+.social-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.modal-backdrop{
+  background:rgba(5,17,25,.62);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  transition:opacity .3s ease-out;
+}
+
+.info-modal{
+  transition:opacity .3s ease-out,transform .3s ease-out;
+  transform:scale(.94) translateY(12px);
+}
+
+.modal-layer.is-open .info-modal{
+  transform:scale(1) translateY(0);
+}
+
+.modal-lead{
+  font-size:1.05rem;
+  line-height:1.72;
+}
+
+.modal-highlight{
+  margin-top:22px;
+  padding:18px 20px;
+  border-left:4px solid var(--coral);
+  background:rgba(200,73,46,.08);
+}
+
+.modal-highlight strong,
+.modal-highlight span{
+  display:block;
+}
+
+.modal-highlight strong{
+  margin-bottom:6px;
+  color:var(--coral);
+}
+
+.modal-highlight b{
+  color:var(--coral);
+}
+
+.modal-rich-list{
+  list-style:none;
+  padding:0;
+  margin:22px 0;
+  border-top:1px solid var(--line);
+}
+
+.modal-rich-list li{
+  position:relative;
+  padding:13px 0 13px 24px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-rich-list li::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:22px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--coral);
+}
+
+.modal-closing{
+  margin-top:22px!important;
+  font-family:var(--serif);
+  font-size:1.35rem;
+  color:var(--ink);
+}
+
+.modal-proof{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:18px;
+  align-items:center;
+  margin-top:22px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+}
+
+.modal-proof strong{
+  font-family:var(--serif);
+  font-size:2.45rem;
+  line-height:1;
+  color:var(--coral);
+}
+
+.modal-proof span{
+  color:var(--ink-soft);
+}
+
+body.modal-open{
+  overflow:hidden;
+  touch-action:none;
+}
+
+@media(max-width:620px){
+  .social-actions{display:grid}
+  .modal-proof{grid-template-columns:1fr;gap:8px}
+  .pillar-clickable:hover{transform:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .btn,
+  .formation-detail-btn,
+  .info-trigger,
+  .footer a,
+  .social-actions a,
+  .pillar-clickable,
+  .modal-backdrop,
+  .info-modal{
+    transition:none!important;
+    transform:none!important;
+  }
+}

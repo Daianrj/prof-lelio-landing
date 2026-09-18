@@ -612,3 +612,26 @@ document.addEventListener("DOMContentLoaded",async()=>{
   initThematicAnimations();
   await initAdminMediaOverrides();
 });
+
+function initCareerTimelineReveal(){
+  const items=document.querySelectorAll("[data-career-reveal]");
+  if(!items.length)return;
+
+  const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion||!("IntersectionObserver" in window)){
+    items.forEach(item=>item.classList.add("career-revealed"));
+    return;
+  }
+
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      entry.target.classList.add("career-revealed");
+      observer.unobserve(entry.target);
+    });
+  },{threshold:.14,rootMargin:"0px 0px -8% 0px"});
+
+  items.forEach(item=>observer.observe(item));
+}
+
+document.addEventListener("DOMContentLoaded",initCareerTimelineReveal);

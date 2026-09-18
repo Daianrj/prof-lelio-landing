@@ -656,3 +656,60 @@ html.modal-open-root{
     transition:none!important;
   }
 }
+
+
+/* ===== TRAJETÓRIA DO PROF. LÉLIO ===== */
+.career-timeline-section{
+  padding:100px 0 110px;
+  background:#f6f7f7;
+  color:#12222e;
+}
+.career-timeline-container{width:min(1120px,92%);margin-inline:auto}
+.career-timeline-header{max-width:790px;margin-bottom:68px}
+.career-timeline-kicker{margin:0 0 14px;color:#51636f;font:500 .95rem var(--sans,"IBM Plex Sans",sans-serif)}
+.career-timeline-header h2{margin:0 0 20px;color:#12222e;font:500 clamp(3rem,6vw,5.8rem)/.98 var(--serif,"Fraunces",Georgia,serif);letter-spacing:-.035em}
+.career-timeline-header>p:last-child{max-width:660px;margin:0;color:#596a75;font-size:1.08rem;line-height:1.75}
+.career-timeline{position:relative;max-width:930px;margin-left:auto}
+.career-timeline::before{content:"";position:absolute;top:18px;bottom:18px;left:31px;width:1px;background:#b5c2c9}
+.career-timeline-item{position:relative;display:grid;grid-template-columns:64px 1fr;gap:30px;padding-bottom:52px}
+.career-timeline-item:last-child{padding-bottom:0}
+.career-timeline-marker{position:relative;z-index:2;display:grid;place-items:center;width:64px;height:64px;border:1px solid #0e2233;border-radius:50%;background:#f6f7f7;color:#0e2233;transition:background-color .3s ease-out,color .3s ease-out,border-color .3s ease-out,transform .3s ease-out,box-shadow .3s ease-out}
+.career-timeline-marker span{font-size:.78rem;font-weight:600}
+.career-timeline-content{position:relative;padding:4px 30px 28px;border-bottom:1px solid #d6dce0;transition:border-color .3s ease-out,background-color .3s ease-out,box-shadow .3s ease-out,transform .3s ease-out}
+.career-timeline-label{display:block;margin-bottom:7px;color:#70808a;font-size:.78rem;font-weight:500}
+.career-timeline-content h3{margin:0 0 12px;color:#12222e;font:500 clamp(1.65rem,3vw,2.35rem)/1.12 var(--serif,"Fraunces",Georgia,serif);letter-spacing:-.02em}
+.career-timeline-content p{max-width:720px;margin:0;color:#576872;font-size:1rem;line-height:1.75}
+.career-timeline-item:hover .career-timeline-content{border-color:#2e8ab8;background:rgba(255,255,255,.68);box-shadow:0 13px 35px rgba(14,34,51,.06),inset 3px 0 0 rgba(46,138,184,.78);transform:translateX(4px)}
+.career-timeline-item:hover .career-timeline-marker{background:#0e2233;color:#fff;border-color:#2e8ab8;transform:scale(1.06);box-shadow:0 0 0 6px rgba(46,138,184,.08),0 9px 24px rgba(14,34,51,.14)}
+.career-timeline-item-highlight .career-timeline-marker{background:#0e2233;color:#fff}
+.career-timeline-item-highlight .career-timeline-content{border-bottom-color:#0e2233}
+[data-career-reveal]{opacity:0;transform:translateY(14px);transition:opacity .6s ease-out,transform .6s ease-out}
+[data-career-reveal].career-revealed{opacity:1;transform:translateY(0)}
+[data-career-reveal]:nth-child(2){transition-delay:.06s}
+[data-career-reveal]:nth-child(3){transition-delay:.12s}
+[data-career-reveal]:nth-child(4){transition-delay:.18s}
+[data-career-reveal]:nth-child(5){transition-delay:.24s}
+@media(max-width:760px){
+  .career-timeline-section{padding:72px 0 80px}
+  .career-timeline-header{margin-bottom:48px}
+  .career-timeline-header h2{font-size:clamp(2.8rem,14vw,4.4rem)}
+  .career-timeline{margin-left:0}
+  .career-timeline::before{left:22px}
+  .career-timeline-item{grid-template-columns:46px 1fr;gap:18px;padding-bottom:42px}
+  .career-timeline-marker{width:46px;height:46px}
+  .career-timeline-content{padding:0 0 24px}
+  .career-timeline-item:hover .career-timeline-content{transform:none}
+}
+@media(prefers-color-scheme:dark){
+  .career-timeline-section{background:#151f25;color:#edf2f4}
+  .career-timeline-header h2,.career-timeline-content h3{color:#edf2f4}
+  .career-timeline-header>p:last-child,.career-timeline-content p,.career-timeline-kicker,.career-timeline-label{color:#aeb9bf}
+  .career-timeline-marker{background:#151f25;color:#edf2f4;border-color:#8ea3af}
+  .career-timeline::before{background:#465761}
+  .career-timeline-content{border-color:#39454b}
+  .career-timeline-item:hover .career-timeline-content{background:rgba(255,255,255,.035)}
+}
+@media(prefers-reduced-motion:reduce){
+  [data-career-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+  .career-timeline-marker,.career-timeline-content{transition:none!important}
+}

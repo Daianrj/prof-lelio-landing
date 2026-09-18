@@ -8,9 +8,9 @@
       "active": true,
       "status": "Lista de interesse",
       "city": "Méier - RJ",
-      "mode": "A definir pela ADM",
-      "schedule": "A definir pela ADM",
-      "seats": "A definir pela ADM",
+      "mode": "Consulte a equipe",
+      "schedule": "Próxima turma sob consulta",
+      "seats": "Vagas sob consulta",
       "description": "Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."
     },
     {
@@ -21,9 +21,9 @@
       "active": true,
       "status": "Lista de interesse",
       "city": "Rio de Janeiro",
-      "mode": "A definir pela ADM",
-      "schedule": "A definir pela ADM",
-      "seats": "A definir pela ADM",
+      "mode": "Consulte a equipe",
+      "schedule": "Próxima turma sob consulta",
+      "seats": "Vagas sob consulta",
       "description": "Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."
     },
     {
@@ -33,10 +33,10 @@
       "featured": false,
       "active": true,
       "status": "Novas turmas sob consulta",
-      "city": "A definir",
-      "mode": "A definir pela ADM",
-      "schedule": "A definir pela ADM",
-      "seats": "A definir pela ADM",
+      "city": "Rio de Janeiro",
+      "mode": "Consulte a equipe",
+      "schedule": "Próxima turma sob consulta",
+      "seats": "Vagas sob consulta",
       "description": "Capacitação prática em ultrassonografia à beira do leito."
     }
   ],

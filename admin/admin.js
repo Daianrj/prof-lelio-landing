@@ -10,6 +10,7 @@ faqs:[
 {q:"Como recebo valores e condições de pagamento?",a:"Preencha o formulário ou fale pelo WhatsApp para receber as condições atualizadas."},
 {q:"Há certificado?",a:"A certificação e demais regras acadêmicas devem ser confirmadas na apresentação oficial de cada curso."}
 ]};
+
 let data=load();
 function load(){try{return JSON.parse(localStorage.getItem("lelio_site_data"))||structuredClone(DEFAULT_DATA)}catch(e){return structuredClone(DEFAULT_DATA)}}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
@@ -30,10 +31,53 @@ function bind(){
  document.querySelectorAll("[data-remove-course]").forEach(b=>b.onclick=()=>{data.courses.splice(+b.dataset.removeCourse,1);render()});
  document.querySelectorAll("[data-remove-faq]").forEach(b=>b.onclick=()=>{data.faqs.splice(+b.dataset.removeFaq,1);render()});
 }
-function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500)}
+
+function openMediaDb(){
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open("lelio_admin_media",1);
+  req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains("media"))db.createObjectStore("media")};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+ });
+}
+async function saveMedia(key,file){
+ const db=await openMediaDb();
+ await new Promise((resolve,reject)=>{const tx=db.transaction("media","readwrite");tx.objectStore("media").put(file,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
+ db.close();
+}
+async function getMedia(key){
+ const db=await openMediaDb();
+ const value=await new Promise((resolve,reject)=>{const tx=db.transaction("media","readonly");const r=tx.objectStore("media").get(key);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)});
+ db.close();return value;
+}
+async function deleteMedia(key){
+ const db=await openMediaDb();
+ await new Promise((resolve,reject)=>{const tx=db.transaction("media","readwrite");tx.objectStore("media").delete(key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
+ db.close();
+}
+function showPreview(key,file){
+ const map={profile:["profilePreview","img"],science:["sciencePreview","img"],video:["videoPreview","video"]};
+ const [id]=map[key];const el=document.getElementById(id);if(!el)return;
+ if(el.dataset.url)URL.revokeObjectURL(el.dataset.url);
+ const url=URL.createObjectURL(file);el.dataset.url=url;el.src=url;el.style.display="block";
+}
+async function initMedia(){
+ for(const key of ["profile","science","video"]){const file=await getMedia(key);if(file)showPreview(key,file)}
+ const inputs={profile:"profileUpload",science:"scienceUpload",video:"videoUpload"};
+ Object.entries(inputs).forEach(([key,id])=>document.getElementById(id).addEventListener("change",async e=>{
+   const file=e.target.files?.[0];if(!file)return;
+   await saveMedia(key,file);showPreview(key,file);toast("Mídia salva neste navegador.");
+ }));
+ document.querySelectorAll("[data-clear-media]").forEach(btn=>btn.onclick=async()=>{
+   const key=btn.dataset.clearMedia;await deleteMedia(key);
+   const id=key==="profile"?"profilePreview":key==="science"?"sciencePreview":"videoPreview";
+   const el=document.getElementById(id);el.removeAttribute("src");el.style.display="none";if(el.load)el.load();toast("Mídia local removida.");
+ });
+}
+
 document.getElementById("addCourse").onclick=()=>{data.courses.push({id:"curso-"+Date.now(),title:"Nova formação",type:"Curso",featured:false,active:true,status:"Lista de interesse",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:""});render()}
 document.getElementById("addFaq").onclick=()=>{data.faqs.push({q:"Nova pergunta",a:"Resposta"});render()}
 document.getElementById("saveBtn").onclick=()=>{localStorage.setItem("lelio_site_data",JSON.stringify(data));toast("Alterações salvas neste navegador.")}
 document.getElementById("resetBtn").onclick=()=>{if(confirm("Restaurar os dados padrão?")){data=structuredClone(DEFAULT_DATA);localStorage.removeItem("lelio_site_data");render();toast("Padrão restaurado.")}}
 document.getElementById("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="site-data.json";a.click();URL.revokeObjectURL(a.href)}
-render();
+render();initMedia();

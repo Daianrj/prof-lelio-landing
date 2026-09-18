@@ -13,3 +13,21 @@
 .footer{background:#040b13;color:#8fa0b2;padding:34px 0 90px}.footer-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer b,.footer span{display:block}.footer b{color:#fff}.footer-links{display:flex;gap:18px}.floating-wa{position:fixed;right:18px;bottom:18px;z-index:1100;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#06150c;font-weight:900;box-shadow:0 18px 40px rgba(0,0,0,.24)}
 @media(max-width:980px){.nav-links{display:none}.hero-grid,.section-head,.science,.lead-grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr 1fr}.courses-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr 1fr}.hero-card{max-width:640px}.hero-portrait{min-height:400px}}
 @media(max-width:620px){.hero{padding-top:118px}.hero h1{font-size:3.4rem;letter-spacing:-2.4px}.hero-copy>p{font-size:1rem}.actions{display:grid}.btn{width:100%}.trust{display:grid;gap:10px}.metric-grid,.feature-grid{grid-template-columns:1fr}.metric-grid article{border-right:0;border-bottom:1px solid var(--line)}.metric-grid article:last-child{border-bottom:0}.section{padding:72px 0}.section-head h2,.science-copy h2,.lead-section h2,.final-cta h2{letter-spacing:-1.5px}.science-copy,.lead-form{padding:25px}.nav .btn{display:none}.hero-card{border-radius:26px}.hero-portrait{min-height:350px}.portrait-placeholder strong{font-size:2.35rem}.footer-links{width:100%;flex-wrap:wrap}}
+.hero-portrait{overflow:hidden}
+.hero-portrait img{width:100%;height:100%;min-height:470px;object-fit:cover;object-position:center 18%;display:block}
+.science-photo{background:
+ linear-gradient(180deg,rgba(6,17,30,.08),rgba(6,17,30,.58)),
+ url("../media/congresso-ciencia.webp") center/cover no-repeat}
+.media-section{background:#fff}
+.media-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}
+.video-card,.media-photo{border:1px solid var(--line);border-radius:28px;overflow:hidden;background:#071827;box-shadow:var(--shadow)}
+.video-card video{width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:cover}
+.video-copy{padding:24px;color:#fff}
+.video-copy span,.media-photo span{font-size:.72rem;letter-spacing:1.35px;font-weight:900;color:var(--cyan2)}
+.video-copy h3,.media-photo h3{font-size:1.45rem;line-height:1.1;margin:8px 0}
+.video-copy p{color:#afbdcc;margin:0}
+.media-photo{position:relative;min-height:430px}
+.media-photo img{width:100%;height:100%;min-height:430px;object-fit:cover;display:block}
+.media-photo>div{position:absolute;left:0;right:0;bottom:0;padding:26px;color:#fff;background:linear-gradient(transparent,rgba(5,15,27,.92))}
+@media(max-width:980px){.media-grid{grid-template-columns:1fr}.hero-portrait img{min-height:400px}.media-photo,.media-photo img{min-height:380px}}
+@media(max-width:620px){.hero-portrait img{min-height:350px}.media-photo,.media-photo img{min-height:330px}}

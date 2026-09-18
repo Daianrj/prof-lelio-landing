@@ -12,6 +12,41 @@ const FALLBACK_DATA={
   ]
 };
 
+const FACEBOOK_URL="https://www.facebook.com/leliolima.ictuspos/";
+
+const PILLAR_MODAL_CONTENT={
+  "Especialização multidisciplinar":{
+    kicker:"Especialização multidisciplinar",
+    title:"Formação para avançar com mais segurança técnica.",
+    html:"<p>Formação para profissionais e estudantes da saúde em busca de evolução técnica e profissional.</p>"
+  },
+  "Prática em saúde":{
+    kicker:"Método prático",
+    title:"Protocolo M.O.V.E.R.",
+    html:[
+      '<p class="modal-lead">Curso M.O.V.E.R. - Abordagens ao Paciente com Dor Torácica: IAM. Criado pelo Prof. Lélio Lima (Intensivista, Cardiologista e graduado pela UERJ) para te dar a segurança e a qualidade que você precisa para NUNCA MAIS ter aquele frio na barra ao atender um paciente com infarto.</p>',
+      '<div class="modal-highlight"><strong>Oferta para novos alunos</strong><span>Inscreva-se com o Cupom: <b>MOVER20</b> e garanta 20% de desconto especial para novos alunos.</span></div>'
+    ].join("")
+  },
+  "Ictus Cordis":{
+    kicker:"Infraestrutura e equipamentos",
+    title:"Centro de Simulação Realística da Ictus Cordis",
+    html:[
+      "<p>O Centro de Simulação Realística da Ictus Cordis é apresentado como um diferencial de formação prática, com foco em alta performance clínica e uso de equipamentos de ponta, incluindo Estetoscópios Riester.</p>",
+      '<ul class="modal-rich-list"><li>Monitor Multimodal de arritmias em tempo real</li><li>Manequins avançados de CTI acoplados a ventilador mecânico</li><li>Mesas de acesso venoso guiado por ultrassom</li></ul>',
+      '<p class="modal-closing">É aqui que você aprende na prática de verdade.</p>'
+    ].join("")
+  },
+  "Formação continuada":{
+    kicker:"Certificação e comunidade",
+    title:"UniRedentor / Ictus Pos",
+    html:[
+      "<p>Certificação e peso institucional com referência à UniRedentor / Ictus Pos sob a coordenação acadêmica do professor.</p>",
+      '<div class="modal-proof"><strong>+5.300</strong><span>profissionais de saúde ativos na comunidade acadêmica, trocando experiências científicas e casos reais diretamente em redes e fóruns.</span></div>'
+    ].join("")
+  }
+};
+
 async function getData(){
   try{
     const local=localStorage.getItem("lelio_site_data");
@@ -27,6 +62,7 @@ async function getData(){
 function esc(v){
   return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
+
 function waUrl(message){
   const number=(window.SITE_CONFIG?.whatsapp||"5521964896857").replace(/\D/g,"");
   return "https://wa.me/"+number+"?text="+encodeURIComponent(message);
@@ -36,10 +72,13 @@ function renderCourses(data){
   const grid=document.getElementById("coursesGrid");
   const select=document.getElementById("courseSelect");
   if(!grid||!select)return;
+
   grid.innerHTML="";
   select.innerHTML='<option value="">Selecione</option>';
 
-  window.__LELIO_COURSES__=(data.courses||[]).filter(c=>c.active!==false);\n  window.__LELIO_COURSES__.forEach(c=>{
+  window.__LELIO_COURSES__=(data.courses||[]).filter(c=>c.active!==false);
+
+  window.__LELIO_COURSES__.forEach(c=>{
     const row=document.createElement("article");
     row.className="formation-row";
     row.innerHTML=`
@@ -52,7 +91,10 @@ function renderCourses(data){
       <div class="formation-cell"><b>Dias / horários</b><span>${esc(c.schedule)}</span></div>
       <div class="formation-cell"><b>Local</b><span>${esc(c.city)}</span></div>
       <div class="formation-cell"><b>Vagas</b><span>${esc(c.seats)}</span></div>
-      <div class="formation-row-actions"><button class="formation-detail-btn" type="button" data-course-modal data-course-id="${esc(c.id)}">Ver detalhes</button><a class="btn btn-primary" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}" target="_blank" rel="noopener">Quero informações</a></div>`;
+      <div class="formation-row-actions">
+        <button class="formation-detail-btn" type="button" data-course-modal data-course-id="${esc(c.id)}">Ver detalhes</button>
+        <a class="btn btn-primary" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}" target="_blank" rel="noopener">Quero informações</a>
+      </div>`;
     grid.appendChild(row);
 
     const opt=document.createElement("option");
@@ -82,6 +124,7 @@ function initWhatsApp(){
 function initLeadForm(){
   const form=document.getElementById("leadForm");
   if(!form)return;
+
   form.addEventListener("submit",e=>{
     e.preventDefault();
     const fd=new FormData(form);
@@ -90,79 +133,231 @@ function initLeadForm(){
     const email=String(fd.get("email")||"").trim();
     const profissao=String(fd.get("profissao")||"").trim();
     const curso=String(fd.get("curso")||"").trim();
-    const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.\n\nNome: ${nome}\nWhatsApp: ${whats}\nE-mail: ${email||"não informado"}\nProfissão / formação: ${profissao||"não informado"}\nFormação de interesse: ${curso}`;
+
+    const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.
+
+Nome: ${nome}
+WhatsApp: ${whats}
+E-mail: ${email||"não informado"}
+Profissão / formação: ${profissao||"não informado"}
+Formação de interesse: ${curso}`;
+
     const opened=window.open(waUrl(msg),"_blank","noopener");
     if(opened) form.reset();
   });
 }
 
+function injectFacebookLinks(){
+  const footerNav=document.querySelector(".footer nav");
+  if(footerNav&&!footerNav.querySelector('[data-facebook-link]')){
+    const facebook=document.createElement("a");
+    facebook.href=FACEBOOK_URL;
+    facebook.target="_blank";
+    facebook.rel="noopener";
+    facebook.dataset.facebookLink="true";
+    facebook.textContent="Facebook";
+
+    const instagram=[...footerNav.querySelectorAll("a")].find(a=>a.textContent.trim()==="Instagram");
+    if(instagram) instagram.insertAdjacentElement("afterend",facebook);
+    else footerNav.appendChild(facebook);
+  }
+
+  const scienceInstagram=[...document.querySelectorAll("#ciencia a")].find(a=>a.textContent.trim()==="Ver Instagram");
+  if(scienceInstagram&&!document.querySelector("#ciencia [data-facebook-link]")){
+    const facebook=document.createElement("a");
+    facebook.href=FACEBOOK_URL;
+    facebook.target="_blank";
+    facebook.rel="noopener";
+    facebook.dataset.facebookLink="true";
+    facebook.className="btn btn-on-dark";
+    facebook.textContent="Ver Facebook";
+    scienceInstagram.insertAdjacentElement("afterend",facebook);
+
+    const parent=scienceInstagram.parentElement;
+    if(parent) parent.classList.add("social-actions");
+  }
+}
+
 let lastModalTrigger=null;
-function modalElements(){return {layer:document.getElementById("infoModal"),dialog:document.querySelector("#infoModal .info-modal"),kicker:document.getElementById("modalKicker"),title:document.getElementById("modalTitle"),body:document.getElementById("modalBody"),actions:document.getElementById("modalActions")};}
+
+function modalElements(){
+  return {
+    layer:document.getElementById("infoModal"),
+    dialog:document.querySelector("#infoModal .info-modal"),
+    kicker:document.getElementById("modalKicker"),
+    title:document.getElementById("modalTitle"),
+    body:document.getElementById("modalBody"),
+    actions:document.getElementById("modalActions")
+  };
+}
+
 function openInfoModal(config,trigger){
-  const m=modalElements(); if(!m.layer||!m.dialog)return;
+  const m=modalElements();
+  if(!m.layer||!m.dialog)return;
+
   lastModalTrigger=trigger||document.activeElement;
   m.kicker.textContent=config.kicker||"Informações";
   m.title.textContent=config.title||"Detalhes";
-  let bodyHtml="";
-  if(config.text) bodyHtml+="<p>"+esc(config.text)+"</p>";
-  if(config.details&&config.details.length){
-    bodyHtml+='<div class="modal-detail-list">';
-    config.details.forEach(function(d){bodyHtml+="<div><strong>"+esc(d.label)+"</strong><span>"+esc(d.value)+"</span></div>";});
-    bodyHtml+="</div>";
+
+  if(config.html){
+    m.body.innerHTML=config.html;
+  }else{
+    let bodyHtml="";
+    if(config.text) bodyHtml+="<p>"+esc(config.text)+"</p>";
+
+    if(config.details&&config.details.length){
+      bodyHtml+='<div class="modal-detail-list">';
+      config.details.forEach(d=>{
+        bodyHtml+="<div><strong>"+esc(d.label)+"</strong><span>"+esc(d.value)+"</span></div>";
+      });
+      bodyHtml+="</div>";
+    }
+
+    m.body.innerHTML=bodyHtml;
   }
-  m.body.innerHTML=bodyHtml;
+
   m.actions.innerHTML="";
-  (config.actions||[]).forEach(function(a){
+  (config.actions||[]).forEach(a=>{
     const link=document.createElement("a");
     link.className="btn "+(a.className||"btn-primary");
-    link.href=a.href; link.textContent=a.label;
-    if(a.target){link.target=a.target;link.rel="noopener";}
+    link.href=a.href;
+    link.textContent=a.label;
+    if(a.target){
+      link.target=a.target;
+      link.rel="noopener";
+    }
     m.actions.appendChild(link);
   });
-  m.layer.classList.add("is-open"); m.layer.setAttribute("aria-hidden","false"); document.body.classList.add("modal-open");
-  requestAnimationFrame(function(){m.dialog.focus();});
+
+  m.layer.classList.add("is-open");
+  m.layer.setAttribute("aria-hidden","false");
+  document.body.classList.add("modal-open");
+
+  requestAnimationFrame(()=>m.dialog.focus());
 }
+
 function closeInfoModal(){
-  const m=modalElements(); if(!m.layer||!m.layer.classList.contains("is-open"))return;
-  m.layer.classList.remove("is-open"); m.layer.setAttribute("aria-hidden","true"); document.body.classList.remove("modal-open");
-  if(lastModalTrigger&&typeof lastModalTrigger.focus==="function") lastModalTrigger.focus();
+  const m=modalElements();
+  if(!m.layer||!m.layer.classList.contains("is-open"))return;
+
+  m.layer.classList.remove("is-open");
+  m.layer.setAttribute("aria-hidden","true");
+  document.body.classList.remove("modal-open");
+
+  if(lastModalTrigger&&typeof lastModalTrigger.focus==="function"){
+    lastModalTrigger.focus();
+  }
 }
+
+function openPillarModal(title,trigger){
+  const config=PILLAR_MODAL_CONTENT[title]||{
+    kicker:"Sobre a atuação",
+    title,
+    text:trigger?.dataset?.modalText||""
+  };
+
+  openInfoModal(config,trigger);
+}
+
+function enhancePillarRows(){
+  document.querySelectorAll(".attribute-list>div").forEach(row=>{
+    const dt=row.querySelector("dt");
+    if(!dt)return;
+
+    row.classList.add("pillar-clickable");
+    row.setAttribute("role","button");
+    row.setAttribute("tabindex","0");
+    row.setAttribute("aria-label","Ver detalhes sobre "+dt.textContent.trim());
+
+    row.addEventListener("click",e=>{
+      if(e.target.closest("a,button"))return;
+      openPillarModal(dt.textContent.trim(),row);
+    });
+
+    row.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){
+        e.preventDefault();
+        openPillarModal(dt.textContent.trim(),row);
+      }
+    });
+  });
+}
+
 function initInfoModals(){
-  document.addEventListener("click",function(e){
-    if(e.target.closest("[data-modal-close]")){closeInfoModal();return;}
+  document.addEventListener("click",e=>{
+    if(e.target.closest("[data-modal-close]")){
+      closeInfoModal();
+      return;
+    }
+
     const simple=e.target.closest(".info-trigger");
-    if(simple){openInfoModal({kicker:"Sobre a atuação",title:simple.dataset.modalTitle||"Informações",text:simple.dataset.modalText||""},simple);return;}
+    if(simple){
+      openPillarModal(simple.dataset.modalTitle||"Informações",simple);
+      return;
+    }
+
     const courseBtn=e.target.closest("[data-course-modal]");
     if(courseBtn){
       const courses=window.__LELIO_COURSES__||[];
-      const course=courses.find(function(c){return String(c.id)===String(courseBtn.dataset.courseId);});
+      const course=courses.find(c=>String(c.id)===String(courseBtn.dataset.courseId));
       if(!course)return;
-      openInfoModal({kicker:course.status||"Formação",title:course.title,text:course.description,details:[
-        {label:"Modalidade",value:course.mode||"Consulte a equipe"},
-        {label:"Dias / horários",value:course.schedule||"Próxima turma sob consulta"},
-        {label:"Local",value:course.city||"Consulte a equipe"},
-        {label:"Vagas",value:course.seats||"Vagas sob consulta"}
-      ],actions:[
-        {label:"Quero informações",className:"btn-primary",href:waUrl("Olá Professor Lélio, gostaria de informações sobre "+course.title+"."),target:"_blank"},
-        {label:"Entrar na lista",className:"btn-secondary",href:"#alunos"}
-      ]},courseBtn);
+
+      openInfoModal({
+        kicker:course.status||"Formação",
+        title:course.title,
+        text:course.description,
+        details:[
+          {label:"Modalidade",value:course.mode||"Consulte a equipe"},
+          {label:"Dias / horários",value:course.schedule||"Próxima turma sob consulta"},
+          {label:"Local",value:course.city||"Consulte a equipe"},
+          {label:"Vagas",value:course.seats||"Vagas sob consulta"}
+        ],
+        actions:[
+          {label:"Quero informações",className:"btn-primary",href:waUrl("Olá Professor Lélio, gostaria de informações sobre "+course.title+"."),target:"_blank"},
+          {label:"Entrar na lista",className:"btn-secondary",href:"#alunos"}
+        ]
+      },courseBtn);
     }
   });
-  document.addEventListener("keydown",function(e){
-    if(e.key==="Escape")closeInfoModal();
+
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){
+      closeInfoModal();
+      return;
+    }
+
     if(e.key!=="Tab")return;
-    const m=modalElements(); if(!m.layer||!m.layer.classList.contains("is-open"))return;
-    const focusables=Array.from(m.dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'));
-    if(!focusables.length)return; const first=focusables[0],last=focusables[focusables.length-1];
-    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
-    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+
+    const m=modalElements();
+    if(!m.layer||!m.layer.classList.contains("is-open"))return;
+
+    const focusables=Array.from(
+      m.dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')
+    );
+
+    if(!focusables.length)return;
+
+    const first=focusables[0];
+    const last=focusables[focusables.length-1];
+
+    if(e.shiftKey&&document.activeElement===first){
+      e.preventDefault();
+      last.focus();
+    }else if(!e.shiftKey&&document.activeElement===last){
+      e.preventDefault();
+      first.focus();
+    }
   });
 }
 
 document.addEventListener("DOMContentLoaded",async()=>{
   const data=await getData();
+
   renderCourses(data);
   renderFaqs(data);
   initWhatsApp();
   initLeadForm();
+  injectFacebookLinks();
+  enhancePillarRows();
+  initInfoModals();
 });

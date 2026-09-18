@@ -873,3 +873,52 @@ html.modal-open-root{
     aspect-ratio:9 / 16 !important;
   }
 }
+
+
+/* FIX FINAL ADM MEDIA — cada upload no bloco correto e proporção natural */
+.media-section .media-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:start;
+  gap:32px;
+}
+
+.media-section .photo-feature,
+.media-section .photo-feature.portrait-feature{
+  display:block;
+  background:transparent !important;
+  overflow:visible;
+}
+
+.media-section .photo-feature img,
+.media-section .photo-feature.portrait-feature img{
+  display:block;
+  width:100%;
+  height:auto !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+  background:transparent !important;
+}
+
+.media-section .photo-feature figcaption,
+.media-section .photo-feature.portrait-feature figcaption{
+  position:static;
+  width:100%;
+  padding:16px 0 0;
+  background:transparent !important;
+}
+
+@media(max-width:760px){
+  .media-section .media-grid{
+    grid-template-columns:1fr;
+    gap:42px;
+  }
+
+  .media-section .photo-feature img,
+  .media-section .photo-feature.portrait-feature img{
+    width:100%;
+    height:auto !important;
+    aspect-ratio:auto !important;
+  }
+}

@@ -569,13 +569,14 @@ async function initAdminMediaOverrides(){
   }
 
   if(science){
-    const scienceImg=document.querySelector(".portrait-feature img, .photo-feature img");
+    const scienceImg=document.querySelector(".media-section .portrait-feature img");
     if(scienceImg){
       if(scienceImg.dataset.localObjectUrl) URL.revokeObjectURL(scienceImg.dataset.localObjectUrl);
       const url=URL.createObjectURL(science);
       scienceImg.dataset.localObjectUrl=url;
       scienceImg.src=url;
       scienceImg.removeAttribute("srcset");
+      scienceImg.closest(".portrait-feature")?.classList.add("has-admin-science-media");
     }
   }
 

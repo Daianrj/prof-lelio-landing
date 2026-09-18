@@ -390,3 +390,10 @@ body.modal-open{
     transform:none!important;
   }
 }
+
+.floating-wa svg{
+  width:30px;
+  height:30px;
+  fill:currentColor;
+  display:block;
+}

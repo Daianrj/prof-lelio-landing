@@ -283,23 +283,28 @@ function enhancePillarRows(){
   });
 }
 
-function initInfoModals(){
-  document.addEventListener("click",e=>{
-    if(e.target.closest("[data-modal-close]")){
-      closeInfoModal();
-      return;
-    }
+function bindDirectModalTriggers(){
+  document.querySelectorAll(".info-trigger").forEach(button=>{
+    if(button.dataset.modalBound==="1") return;
+    button.dataset.modalBound="1";
 
-    const simple=e.target.closest(".info-trigger");
-    if(simple){
-      openPillarModal(simple.dataset.modalTitle||"Informações",simple);
-      return;
-    }
+    button.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      openPillarModal(button.dataset.modalTitle||"Informações",button);
+    });
+  });
 
-    const courseBtn=e.target.closest("[data-course-modal]");
-    if(courseBtn){
+  document.querySelectorAll("[data-course-modal]").forEach(button=>{
+    if(button.dataset.modalBound==="1") return;
+    button.dataset.modalBound="1";
+
+    button.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+
       const courses=window.__LELIO_COURSES__||[];
-      const course=courses.find(c=>String(c.id)===String(courseBtn.dataset.courseId));
+      const course=courses.find(c=>String(c.id)===String(button.dataset.courseId));
       if(!course)return;
 
       openInfoModal({
@@ -316,7 +321,15 @@ function initInfoModals(){
           {label:"Quero informações",className:"btn-primary",href:waUrl("Olá Professor Lélio, gostaria de informações sobre "+course.title+"."),target:"_blank"},
           {label:"Entrar na lista",className:"btn-secondary",href:"#alunos"}
         ]
-      },courseBtn);
+      },button);
+    });
+  });
+}
+
+function initInfoModals(){
+  document.addEventListener("click",e=>{
+    if(e.target.closest("[data-modal-close]")){
+      closeInfoModal();
     }
   });
 
@@ -348,8 +361,9 @@ function initInfoModals(){
       first.focus();
     }
   });
-}
 
+  bindDirectModalTriggers();
+}
 document.addEventListener("DOMContentLoaded",async()=>{
   const data=await getData();
 
@@ -360,4 +374,5 @@ document.addEventListener("DOMContentLoaded",async()=>{
   injectFacebookLinks();
   enhancePillarRows();
   initInfoModals();
+  bindDirectModalTriggers();
 });

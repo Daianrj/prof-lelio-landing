@@ -1,8 +1,8 @@
-const DEFAULT_DATA={
+const FALLBACK_DATA={
   courses:[
-    {id:"uti-adulto",title:"Terapia Intensiva Adulto",type:"Especialização",featured:true,status:"Lista de interesse",city:"Méier - RJ",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
-    {id:"cardiologia",title:"Enfermagem em Cardiologia",type:"Especialização",featured:false,status:"Lista de interesse",city:"Rio de Janeiro",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
-    {id:"pocus",title:"Ultrassonografia Point of Care",type:"Curso prático",featured:false,status:"Novas turmas sob consulta",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Capacitação prática em ultrassonografia à beira do leito."}
+    {id:"uti-adulto",title:"Terapia Intensiva Adulto",type:"Especialização",featured:true,active:true,status:"Lista de interesse",city:"Méier - RJ",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
+    {id:"cardiologia",title:"Enfermagem em Cardiologia",type:"Especialização",featured:false,active:true,status:"Lista de interesse",city:"Rio de Janeiro",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
+    {id:"pocus",title:"Ultrassonografia Point of Care",type:"Curso prático",featured:false,active:true,status:"Novas turmas sob consulta",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Capacitação prática em ultrassonografia à beira do leito."}
   ],
   faqs:[
     {q:"Quando serão as próximas turmas?",a:"Datas, dias e horários são definidos pela administração e serão divulgados conforme a abertura de cada turma."},
@@ -12,12 +12,16 @@ const DEFAULT_DATA={
   ]
 };
 
-function getData(){
+async function getData(){
   try{
     const local=localStorage.getItem("lelio_site_data");
     if(local) return JSON.parse(local);
   }catch(e){}
-  return DEFAULT_DATA;
+  try{
+    const response=await fetch("data/site.json",{cache:"no-store"});
+    if(response.ok) return await response.json();
+  }catch(e){}
+  return FALLBACK_DATA;
 }
 
 function waUrl(message){
@@ -31,7 +35,7 @@ function renderCourses(data){
   if(!grid||!select)return;
   grid.innerHTML="";
   select.innerHTML='<option value="">Selecione</option>';
-  (data.courses||[]).filter(c=>c.active!==false).forEach((c,i)=>{
+  (data.courses||[]).filter(c=>c.active!==false).forEach(c=>{
     const card=document.createElement("article");
     card.className="course-card"+(c.featured?" featured":"");
     card.innerHTML=`<span class="status">${esc(c.status||c.type||"Formação")}</span>
@@ -44,13 +48,19 @@ function renderCourses(data){
       </div>
       <a class="btn ${c.featured?"btn-primary":"btn-ghost"}" target="_blank" rel="noopener" href="${waUrl("Olá Professor Lélio, gostaria de informações sobre "+c.title+".")}">Quero informações</a>`;
     grid.appendChild(card);
-    const opt=document.createElement("option");opt.value=c.title;opt.textContent=c.title;select.appendChild(opt);
+    const opt=document.createElement("option");
+    opt.value=c.title;opt.textContent=c.title;select.appendChild(opt);
   });
-  const all=document.createElement("option");all.value="Quero conhecer todas as opções";all.textContent="Quero conhecer todas as opções";select.appendChild(all);
+  const all=document.createElement("option");
+  all.value="Quero conhecer todas as opções";
+  all.textContent="Quero conhecer todas as opções";
+  select.appendChild(all);
 }
 
 function renderFaqs(data){
-  const wrap=document.getElementById("faqList");if(!wrap)return;wrap.innerHTML="";
+  const wrap=document.getElementById("faqList");
+  if(!wrap)return;
+  wrap.innerHTML="";
   (data.faqs||[]).forEach(item=>{
     const d=document.createElement("details");
     d.innerHTML=`<summary>${esc(item.q)}</summary><p>${esc(item.a)}</p>`;
@@ -58,14 +68,19 @@ function renderFaqs(data){
   });
 }
 
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
 
 function initWhatsApp(){
-  document.querySelectorAll(".wa-link").forEach(a=>a.href=waUrl(a.dataset.message||"Olá, vim pelo site e gostaria de informações."));
+  document.querySelectorAll(".wa-link").forEach(a=>{
+    a.href=waUrl(a.dataset.message||"Olá, vim pelo site e gostaria de informações.");
+  });
 }
 
 function initLeadForm(){
-  const form=document.getElementById("leadForm");if(!form)return;
+  const form=document.getElementById("leadForm");
+  if(!form)return;
   form.addEventListener("submit",e=>{
     e.preventDefault();
     const fd=new FormData(form);
@@ -79,7 +94,10 @@ function initLeadForm(){
   });
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-  const data=getData();
-  renderCourses(data);renderFaqs(data);initWhatsApp();initLeadForm();
+document.addEventListener("DOMContentLoaded",async()=>{
+  const data=await getData();
+  renderCourses(data);
+  renderFaqs(data);
+  initWhatsApp();
+  initLeadForm();
 });

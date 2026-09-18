@@ -90,10 +90,10 @@
       <div class="section-copy">
         <p class="lead">O Prof. Lélio Lima atua na educação em saúde e na direção da Ictus Cordis, aproximando atualização científica, formação continuada e aplicação prática.</p>
         <dl class="attribute-list">
-          <div><dt>Especialização multidisciplinar</dt><dd>Formação para profissionais e estudantes da saúde em busca de evolução técnica e profissional.</dd></div>
-          <div><dt>Ictus Cordis</dt><dd>Atuação educacional associada à direção da Ictus Cordis e à capacitação em saúde.</dd></div>
-          <div><dt>Prática em saúde</dt><dd>Conteúdos ligados à cardiologia, terapia intensiva, emergência e formação profissional.</dd></div>
-          <div><dt>Formação continuada</dt><dd>Uma jornada de aprendizado para quem deseja avançar na carreira e manter-se atualizado.</dd></div>
+          <div><dt>Especialização multidisciplinar</dt><dd>Formação para profissionais e estudantes da saúde em busca de evolução técnica e profissional.</dd><button class="info-trigger" type="button" data-modal-title="Especialização multidisciplinar" data-modal-text="Formação para profissionais e estudantes da saúde em busca de evolução técnica e profissional.">Ver detalhes</button></div>
+          <div><dt>Ictus Cordis</dt><dd>Atuação educacional associada à direção da Ictus Cordis e à capacitação em saúde.</dd><button class="info-trigger" type="button" data-modal-title="Ictus Cordis" data-modal-text="Atuação educacional associada à direção da Ictus Cordis e à capacitação em saúde.">Ver detalhes</button></div>
+          <div><dt>Prática em saúde</dt><dd>Conteúdos ligados à cardiologia, terapia intensiva, emergência e formação profissional.</dd><button class="info-trigger" type="button" data-modal-title="Prática em saúde" data-modal-text="Conteúdos ligados à cardiologia, terapia intensiva, emergência e formação profissional.">Ver detalhes</button></div>
+          <div><dt>Formação continuada</dt><dd>Uma jornada de aprendizado para quem deseja avançar na carreira e manter-se atualizado.</dd><button class="info-trigger" type="button" data-modal-title="Formação continuada" data-modal-text="Uma jornada de aprendizado para quem deseja avançar na carreira e manter-se atualizado.">Ver detalhes</button></div>
         </dl>
       </div>
     </div>
@@ -272,6 +272,18 @@
     </nav>
   </div>
 </footer>
+
+
+<div class="modal-layer" id="infoModal" aria-hidden="true">
+  <div class="modal-backdrop" data-modal-close></div>
+  <section class="info-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody" tabindex="-1">
+    <button class="modal-close" type="button" data-modal-close aria-label="Fechar janela">×</button>
+    <p class="modal-kicker" id="modalKicker">Informações</p>
+    <h2 id="modalTitle">Detalhes</h2>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </section>
+</div>
 
 <a class="floating-wa wa-link" data-message="Olá Professor Lélio, vim pelo site e gostaria de informações." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WA</a>
 </body>

@@ -1,0 +1,9 @@
+window.SITE_CONFIG={
+  whatsapp:"5521964896857",
+  instagram:"https://www.instagram.com/prof.leliolima",
+  backend:{
+    provider:"none",
+    supabaseUrl:"",
+    supabaseAnonKey:""
+  }
+};

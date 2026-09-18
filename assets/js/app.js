@@ -1,8 +1,8 @@
 const FALLBACK_DATA={
   courses:[
-    {id:"uti-adulto",title:"Terapia Intensiva Adulto",featured:true,active:true,status:"Lista de interesse",city:"Méier - RJ",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
-    {id:"cardiologia",title:"Enfermagem em Cardiologia",featured:false,active:true,status:"Lista de interesse",city:"Rio de Janeiro",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
-    {id:"pocus",title:"Ultrassonografia Point of Care",featured:false,active:true,status:"Novas turmas sob consulta",city:"A definir",mode:"A definir pela ADM",schedule:"A definir pela ADM",seats:"A definir pela ADM",description:"Capacitação prática em ultrassonografia à beira do leito."}
+    {id:"uti-adulto",title:"Terapia Intensiva Adulto",featured:true,active:true,status:"Lista de interesse",city:"Méier - RJ",mode:"Consulte a equipe",schedule:"Próxima turma sob consulta",seats:"Vagas sob consulta",description:"Formação direcionada ao aperfeiçoamento profissional em cuidados intensivos."},
+    {id:"cardiologia",title:"Enfermagem em Cardiologia",featured:false,active:true,status:"Lista de interesse",city:"Rio de Janeiro",mode:"Consulte a equipe",schedule:"Próxima turma sob consulta",seats:"Vagas sob consulta",description:"Formação alinhada à prática e aos conteúdos de cardiologia presentes no perfil profissional."},
+    {id:"pocus",title:"Ultrassonografia Point of Care",featured:false,active:true,status:"Novas turmas sob consulta",city:"Rio de Janeiro",mode:"Consulte a equipe",schedule:"Próxima turma sob consulta",seats:"Vagas sob consulta",description:"Capacitação prática em ultrassonografia à beira do leito."}
   ],
   faqs:[
     {q:"Quando serão as próximas turmas?",a:"Datas, dias e horários são definidos pela administração e serão divulgados conforme a abertura de cada turma."},
@@ -91,7 +91,8 @@ function initLeadForm(){
     const profissao=String(fd.get("profissao")||"").trim();
     const curso=String(fd.get("curso")||"").trim();
     const msg=`Olá Professor Lélio, vim pelo site e gostaria de informações.\n\nNome: ${nome}\nWhatsApp: ${whats}\nE-mail: ${email||"não informado"}\nProfissão / formação: ${profissao||"não informado"}\nFormação de interesse: ${curso}`;
-    window.open(waUrl(msg),"_blank","noopener");
+    const opened=window.open(waUrl(msg),"_blank","noopener");
+    if(opened) form.reset();
   });
 }
 
